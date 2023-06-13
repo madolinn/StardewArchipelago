@@ -78,36 +78,10 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
                 return;
             }
 
-            AddFarmhouseToModifiedEntrances();
-
             if (slotData.EntranceRandomization == EntranceRandomization.Chaos)
             {
                 return;
             }
-
-            SwapFarmhouseEntranceWithAnotherEmptyAreaEntrance(slotData);
-        }
-
-        private void AddFarmhouseToModifiedEntrances()
-        {
-            var farmhouseToFarm = ReverseKey(FARM_TO_FARMHOUSE);
-            _modifiedEntrances.Add(FARM_TO_FARMHOUSE, FARM_TO_FARMHOUSE);
-            _modifiedEntrances.Add(farmhouseToFarm, farmhouseToFarm);
-        }
-
-        private void SwapFarmhouseEntranceWithAnotherEmptyAreaEntrance(SlotData slotData)
-        {
-            var outsideAreas = new[] { "Town", "Mountain", "Farm", "Forest", "BusStop", "Desert", "Beach" };
-            var random = new Random(int.Parse(slotData.Seed));
-            var chosenEntrance = "";
-            var replacementIsOutside = false;
-            while (!replacementIsOutside)
-            {
-                chosenEntrance = _modifiedEntrances.Keys.ToArray()[random.Next(_modifiedEntrances.Keys.Count)];
-                replacementIsOutside = outsideAreas.Contains(chosenEntrance.Split(TRANSITIONAL_STRING)[0]) && !chosenEntrance.Contains("67|17"); // 67|17 is Quarry Mine
-            }
-
-            SwapTwoEntrances(_modifiedEntrances, chosenEntrance, FARM_TO_FARMHOUSE);
         }
 
         private static void SwapTwoEntrances(Dictionary<string, string> entrances, string entrance1, string entrance2)
