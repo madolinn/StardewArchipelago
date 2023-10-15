@@ -85,7 +85,7 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
                 return;
             }
 
-            SwapFarmhouseEntranceWithAnotherEmptyAreaEntrance(slotData);
+            // SwapFarmhouseEntranceWithAnotherEmptyAreaEntrance(slotData);
         }
 
         private void AddFarmhouseToModifiedEntrances()
