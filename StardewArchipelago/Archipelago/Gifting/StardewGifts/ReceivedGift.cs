@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
+﻿using StardewArchipelago.Items.Mail;
+using System;
+using StardewArchipelago.Stardew;
 
-namespace StardewArchipelago.Archipelago.Gifting
+namespace StardewArchipelago.Archipelago.Gifting.StardewGifts
 {
-    internal class ReceivedGift
+    public abstract class ReceivedGift
     {
-        public string ItemName { get; }
         public int SenderSlot { get; }
         public string SenderName { get; }
 
-        public ReceivedGift(string itemName, int senderSlot, string senderName)
+        public ReceivedGift(int senderSlot, string senderName)
         {
-            ItemName = itemName;
             SenderSlot = senderSlot;
             SenderName = senderName;
         }
@@ -27,12 +22,12 @@ namespace StardewArchipelago.Archipelago.Gifting
                 return false;
             }
 
-            return ItemName.Equals(otherGift.ItemName) && SenderSlot == otherGift.SenderSlot && SenderName.Equals(otherGift.SenderName);
+            return SenderSlot == otherGift.SenderSlot && SenderName.Equals(otherGift.SenderName);
         }
 
         public override int GetHashCode()
         {
-            return ItemName.GetHashCode() ^ SenderSlot ^ SenderName.GetHashCode();
+            return SenderSlot ^ SenderName.GetHashCode();
         }
         
         public static bool operator ==(ReceivedGift obj1, ReceivedGift obj2)
@@ -54,5 +49,7 @@ namespace StardewArchipelago.Archipelago.Gifting
         {
             return !(obj1 == obj2);
         }
+
+        public abstract void SendToPlayer(Mailman mail, StardewItemManager itemManager, string[] relatedGiftIds, string senderGame, int amount);
     }
 }
