@@ -91,7 +91,6 @@ namespace StardewArchipelago.Extensions
             warpPoints.AddRange(GetAllTouchWarpsTo(origin, destinationName).Select(warp => new Point(warp.X, warp.Y)));
             warpPoints.AddRange(GetAllTouchActionWarpsTo(origin, destinationName).Select(x => new Point(x.Key.X, x.Key.Y)));
             warpPoints.AddRange(GetDoorWarpPoints(origin, destinationName));
-            warpPoints.AddRange(GetBuildingWarps(origin, destinationName).Select(x => new Point(x.Key.X, x.Key.Y)));
             return warpPoints.Distinct().ToList();
         }
 
@@ -134,14 +133,6 @@ namespace StardewArchipelago.Extensions
                 }
 
                 foreach (var (warp, warpTarget) in GetSpecialTriggerWarps(origin, destinationName))
-                {
-                    if (warp.X == warpPointLocation.X && warp.Y == warpPointLocation.Y)
-                    {
-                        return new Point(warpTarget.X, warpTarget.Y);
-                    }
-                }
-
-                foreach (var (warp, warpTarget) in GetBuildingWarps(origin, destinationName))
                 {
                     if (warp.X == warpPointLocation.X && warp.Y == warpPointLocation.Y)
                     {
@@ -382,33 +373,6 @@ namespace StardewArchipelago.Extensions
             }
 
             return specialTriggerWarps;
-        }
-
-        private static Dictionary<Point, Point> GetBuildingWarps(GameLocation origin, string destinationName)
-        {
-            var buildingWarps = new Dictionary<Point, Point>();
-            foreach (var building in origin.buildings)
-            {
-                var interior = building.GetIndoors();
-                if (interior == null)
-                {
-                    continue;
-                }
-                if (!interior.NameOrUniqueName.Equals(destinationName, StringComparison.OrdinalIgnoreCase))
-                {
-                    continue;
-                }
-
-                foreach (var warp in interior.warps)
-                {
-                    if (warp.TargetName == origin.NameOrUniqueName)
-                    {
-                        buildingWarps.Add(new Point(warp.TargetX, warp.TargetY), new Point(warp.X, warp.Y));
-                    }
-                }
-            }
-
-            return buildingWarps;
         }
 
         public static Point GetClosestWarpPointTo(this GameLocation origin, string destinationName, Point currentLocation)
